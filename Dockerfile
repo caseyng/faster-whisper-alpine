@@ -23,6 +23,11 @@
 #     CMake 4.0 removed backward compatibility with cmake_minimum_required
 #     versions below 3.5. Some CTranslate2 submodules declare older minimums.
 #     -DCMAKE_POLICY_VERSION_MINIMUM=3.5 suppresses the error.
+#
+#   Fix 5 — cxxopts missing <cstdint>:
+#     The CTranslate2 CLI tool's cxxopts submodule omits #include <cstdint>,
+#     causing uint8_t errors with GCC 14. We don't need the CLI (only the
+#     library), so -DBUILD_CLI=OFF skips it entirely.
 
 FROM alpine:3.23
 
@@ -61,6 +66,7 @@ RUN EXTRA_CXX="" && \
         -DBUILD_SHARED_LIBS=ON \
         -DCMAKE_INSTALL_PREFIX=/usr/local \
         -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
+        -DBUILD_CLI=OFF \
         "-DCMAKE_CXX_FLAGS=-Dfstat64=fstat -Dstat64=stat $EXTRA_CXX"
 
 # ── CTranslate2: build and install C++ library ─────────────────────────────────
