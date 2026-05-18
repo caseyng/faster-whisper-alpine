@@ -18,6 +18,11 @@
 #   Fix 3 — PyAV version:
 #     Alpine 3.23 ships FFmpeg 8.x, which removed AVFMT_ALLOW_FLUSH.
 #     PyAV <=12 uses that constant, so av>=13 is required.
+#
+#   Fix 4 — CMake 4.x policy:
+#     CMake 4.0 removed backward compatibility with cmake_minimum_required
+#     versions below 3.5. Some CTranslate2 submodules declare older minimums.
+#     -DCMAKE_POLICY_VERSION_MINIMUM=3.5 suppresses the error.
 
 FROM alpine:3.23
 
@@ -55,6 +60,7 @@ RUN EXTRA_CXX="" && \
         -DOPENMP_RUNTIME=NONE \
         -DBUILD_SHARED_LIBS=ON \
         -DCMAKE_INSTALL_PREFIX=/usr/local \
+        -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
         "-DCMAKE_CXX_FLAGS=-Dfstat64=fstat -Dstat64=stat $EXTRA_CXX"
 
 # ── CTranslate2: build and install C++ library ─────────────────────────────────
