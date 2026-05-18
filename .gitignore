@@ -1,0 +1,11 @@
+*.wav
+*.mp3
+*.mp4
+*.m4a
+*.flac
+*.ogg
+*.txt
+*.json
+__pycache__/
+.venv/
+models/
